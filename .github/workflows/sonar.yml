@@ -13,13 +13,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
-      - name: Build and analyze
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Dsonar.projectKey=A-M-Hadziqul-Falah-Teguh-2406437432_2-CICD-Devops \
-          -Dsonar.organization=a-m-hadziqul-falah-teguh-2406437432 \
-          -Dsonar.host.url=https://sonarcloud.io
+      - name: Build and analyze with Gradle
+        run: |
+          ./gradlew build sonar \
+            -Dsonar.projectKey=A-M-Hadziqul-Falah-Teguh-2406437432_2-CICD-Devops \
+            -Dsonar.organization=a-m-hadziqul-falah-teguh-2406437432 \
+            -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
