@@ -60,8 +60,12 @@ tasks.test {
 }
 
 tasks.jacocoTestReport {
-	// (c) jacocoTestReport runs after test
 	dependsOn(tasks.test)
+
+	reports {
+		xml.required.set(true)
+		html.required.set(true)
+	}
 }
 
 tasks.register<Test>("unitTest") {

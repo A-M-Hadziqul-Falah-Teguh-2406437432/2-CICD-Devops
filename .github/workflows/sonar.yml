@@ -19,7 +19,7 @@ jobs:
 
       - name: Build and analyze with Gradle
         run: |
-          ./gradlew build sonar \
+          ./gradlew build jacocoTestReport sonar \
             -Dsonar.projectKey=A-M-Hadziqul-Falah-Teguh-2406437432_2-CICD-Devops \
             -Dsonar.organization=a-m-hadziqul-falah-teguh-2406437432 \
             -Dsonar.host.url=https://sonarcloud.io
