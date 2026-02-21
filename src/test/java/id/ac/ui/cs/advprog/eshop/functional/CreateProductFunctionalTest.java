@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +32,7 @@ class CreateProductFunctionalTest {
     }
 
     @Test
-    void createProduct_isCorrect(ChromeDriver driver) throws Exception {
+    void createProduct_isCorrect(ChromeDriver driver) {
         // Exercise
         driver.get(baseUrl + "/product/list");
 
@@ -51,7 +50,6 @@ class CreateProductFunctionalTest {
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
         // Verify we are back on the list page
-        String currentUrl = driver.getCurrentUrl();
         // Depending on configuration, it might contain query params or not, but usually ends with /product/list
         // or we can check the title
         assertEquals("Product List", driver.getTitle());
