@@ -6,6 +6,10 @@ plugins {
 	id("org.sonarqube") version "4.4.1.3373"
 }
 
+jacoco {
+	toolVersion = "0.8.12" // Explicitly define a Java 21 compatible version
+}
+
 group = "id.ac.ui.cs.advprog"
 version = "0.0.1-SNAPSHOT"
 description = "Demo project for Spring Boot"
