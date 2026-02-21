@@ -51,7 +51,6 @@ class CreateProductFunctionalTest {
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
         // Verify we are back on the list page
-        String currentUrl = driver.getCurrentUrl();
         // Depending on configuration, it might contain query params or not, but usually ends with /product/list
         // or we can check the title
         assertEquals("Product List", driver.getTitle());
