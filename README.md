@@ -10,6 +10,9 @@ Saya juga menangani beberapa masalah kecil terkait maintainability seperti code 
 
 Secara keseluruhan, pendekatan saya : menemukan masalah, memahami akar penyebabnya, menerapkan perbaikan yang minimal namun tepat, lalu memverifikasi hasilnya melalui pipeline CI.
 
+Jacoco 100% Coverage :
+<img width="1919" height="469" alt="image" src="https://github.com/user-attachments/assets/9ae0fa97-829b-4883-8af9-947df5d1e611" />
+
 ---
 
 ## 2. Evaluasi Implementasi CI/CD
