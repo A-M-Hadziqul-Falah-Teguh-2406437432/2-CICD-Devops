@@ -18,8 +18,8 @@ Secara keseluruhan, pendekatan saya : menemukan masalah, memahami akar penyebabn
 
 **Deployment (AWS Academy):**
 <img width="1311" height="381" alt="image" src="https://github.com/user-attachments/assets/7508b4c4-c222-4a18-9c16-363ba92a4429" />
-http://34.227.65.127:8080/product/list
-**Important Note:  **
+http://34.227.65.127:8080/product/list  
+**Important Note:**
 Waktu deployment tidak selalu aktif 24/7 untuk AWS Academy (~ 4 Jam dihentikan), dan harus dilakukan running lagi.
 
 
