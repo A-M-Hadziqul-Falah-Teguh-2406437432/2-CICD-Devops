@@ -13,6 +13,10 @@ Secara keseluruhan, pendekatan saya : menemukan masalah, memahami akar penyebabn
 Jacoco 100% Coverage :
 <img width="1919" height="469" alt="image" src="https://github.com/user-attachments/assets/9ae0fa97-829b-4883-8af9-947df5d1e611" />
 
+Deployment :
+<img width="1311" height="381" alt="image" src="https://github.com/user-attachments/assets/7508b4c4-c222-4a18-9c16-363ba92a4429" />
+
+
 ---
 
 ## 2. Evaluasi Implementasi CI/CD
