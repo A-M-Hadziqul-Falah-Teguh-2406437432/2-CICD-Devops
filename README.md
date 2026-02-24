@@ -13,7 +13,7 @@ Secara keseluruhan, pendekatan saya : menemukan masalah, memahami akar penyebabn
 **Jacoco 100% Coverage :**
 <img width="1919" height="469" alt="image" src="https://github.com/user-attachments/assets/9ae0fa97-829b-4883-8af9-947df5d1e611" />
 
-**CD : **
+**CD :**
 <img width="958" height="875" alt="image" src="https://github.com/user-attachments/assets/b9f20f92-830a-4093-ae81-e63fa30095f4" />
 
 **Deployment (AWS Academy):**
@@ -29,7 +29,4 @@ Implementasi saat ini telah memenuhi definisi **Continuous Integration**, tetapi
 
 **Continuous Integration** telah berhasil diterapkan karena setiap push dan pull request secara otomatis memicu workflow CI di GitHub Actions. Workflow tersebut melakukan kompilasi proyek, menjalankan seluruh rangkaian pengujian otomatis, serta melakukan analisis kode statis menggunakan SonarCloud. Hal ini memastikan bahwa masalah integrasi, kegagalan pengujian, dan masalah kualitas kode dapat terdeteksi lebih awal sebelum perubahan digabungkan ke branch utama. Quality gate otomatis juga memastikan standar kualitas minimum tetap terpenuhi.
 
-Namun, **Continuous Deployment** tidak bisa diimplementasikan. Saya belum dapat menyelesaikan tahap deployment karena mayoritas platform PaaS atau setidaknya semua platform yang saya tau memerlukan **kartu kredit** untuk aktivasi, sementara saya belum memilikinya.
-
-Jika dari tim asdos mengoreksi ini saya harap untuk disampaikan kepada tim dosen dapat memantau platform yang akan digunakan mata kuliah Advanced Programming karena saya rasa kepemilikan kartu kredit merupakan kewenangan mahasiswa masing-masing 🙏.  
-Terimakasih
+Selain itu, **Continuous Deployment** juga berhasil diimplementasikan dengan memanfaatkan layanan AWS EC2 sebagai lingkungan deployment. Setelah perubahan berhasil melewati tahap Continuous Integration, GitHub Actions secara otomatis membangun artefak aplikasi (file JAR), mengirimkannya ke instance EC2 melalui koneksi SSH, dan menjalankan ulang aplikasi pada server. Proses ini memungkinkan setiap perubahan pada branch utama langsung ter-deploy tanpa intervensi manual, sehingga memenuhi karakteristik Continuous Deployment.
