@@ -1,3 +1,5 @@
+## Modul 2 Doc 
+### (Modul 3 Doc terdapat di branch after-solid)
 ## 1. Perbaikan Masalah Kualitas Kode dan Strategi
 
 Selama latihan, saya menemukan beberapa masalah kualitas kode yang dilaporkan oleh SonarCloud. Salah satu masalah berkaitan dengan pengelompokan dependensi di `build.gradle.kts`, di mana dependensi tidak dikelompokkan berdasarkan konfigurasinya (misalnya `implementation`, `testImplementation`, `annotationProcessor`). Saya memperbaikinya dengan menyusun ulang dependensi ke dalam kelompok yang logis.
