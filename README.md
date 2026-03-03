@@ -1,34 +1,56 @@
-## 1. Perbaikan Masalah Kualitas Kode dan Strategi
+## SOLID Reflection
 
-Selama latihan, saya menemukan beberapa masalah kualitas kode yang dilaporkan oleh SonarCloud. Salah satu masalah berkaitan dengan pengelompokan dependensi di `build.gradle.kts`, di mana dependensi tidak dikelompokkan berdasarkan konfigurasinya (misalnya `implementation`, `testImplementation`, `annotationProcessor`). Saya memperbaikinya dengan menyusun ulang dependensi ke dalam kelompok yang logis.
+### 1) Principles yang diterapkan di projek
 
-Saya juga menangani beberapa masalah kecil terkait maintainability seperti code smell dan peringatan struktural. Strategi saya dalam menyelesaikan masalah-masalah tersebut adalah:
+Saya menerapkan prinsip-prinsip SOLID berikut :
 
-- Membaca deskripsi masalah di SonarCloud dengan cermat.
-- Memahami apakah masalah tersebut memengaruhi kebenaran (correctness), keamanan (security), atau kemudahan pemeliharaan (maintainability).
-- Menerapkan perbaikan yang terarah tanpa mengubah fungsionalitas sistem yang sudah direncanakan.
+- **SRP (Single Responsibility Principle)**  
+  Setiap class memiliki satu tanggung jawab utama.  
+  Contoh: `ProductController` hanya menangani endpoint produk, dan `CarController` hanya menangani endpoint mobil.
 
-Secara keseluruhan, pendekatan saya : menemukan masalah, memahami akar penyebabnya, menerapkan perbaikan yang minimal namun tepat, lalu memverifikasi hasilnya melalui pipeline CI.
+- **OCP (Open/Closed Principle)**  
+  Perilaku dapat diperluas tanpa banyak mengubah kode lama.  
+  Contoh: saya menambahkan kontrak umum `CrudReadService<T, ID>` dan `CrudWriteService<T, ID>`, lalu `ProductService` dan `CarService` cukup meng-extend kontrak tersebut.
 
-**Jacoco 100% Coverage :**
-<img width="1919" height="469" alt="image" src="https://github.com/user-attachments/assets/9ae0fa97-829b-4883-8af9-947df5d1e611" />
+- **LSP (Liskov Substitution Principle)**  
+  Tipe turunan harus bisa menggantikan tipe induk tanpa merusak perilaku.  
+  Contoh: sebelumnya `CarController` mewarisi `ProductController`, padahal domainnya berbeda. Inheritance ini dihapus agar tidak melanggar substitusi.
 
-**CD :**
-<img width="958" height="875" alt="image" src="https://github.com/user-attachments/assets/b9f20f92-830a-4093-ae81-e63fa30095f4" />
+- **ISP (Interface Segregation Principle)**  
+  Interface besar dipecah jadi interface kecil dan spesifik.  
+  Contoh: pemisahan `CrudReadService` dan `CrudWriteService` agar klien hanya bergantung pada method yang benar-benar dipakai.
 
-**Deployment (AWS Academy):**
-<img width="1311" height="381" alt="image" src="https://github.com/user-attachments/assets/7508b4c4-c222-4a18-9c16-363ba92a4429" />
-http://34.227.65.127:8080/product/list  
-**Important Note:**
-Waktu deployment tidak selalu aktif 24/7 untuk AWS Academy (~ 4 Jam dihentikan), dan harus dilakukan running lagi.
+- **DIP (Dependency Inversion Principle)**  
+  Modul level tinggi bergantung pada abstraksi, bukan detail implementasi.  
+  Contoh: controller sekarang bergantung pada `ProductService` / `CarService` (interface), bukan langsung ke class implementasi.
 
+### 2) Advantages of applying SOLID in this project :
 
----
+- **Kode lebih mudah dipahami**  
+  Karena SRP, file controller lebih fokus. Saat debugging fitur mobil, saya cukup lihat `CarController`, tidak tercampur logika produk.
 
-## 2. Evaluasi Implementasi CI/CD
+- **Lebih mudah dikembangkan**  
+  Karena OCP + ISP, saat menambah entitas baru (misalnya `Order`), kita bisa membuat `OrderService` yang meng-extend kontrak read/write tanpa mengubah service lain.
 
-Implementasi saat ini telah memenuhi definisi **Continuous Integration**, tetapi belum sepenuhnya mencapai **Continuous Deployment** karena adanya kendala pada proses deployment.
+- **Lebih aman saat refactor**  
+  Karena LSP, struktur inheritance yang tidak tepat dihapus. Ini mengurangi efek samping tak terduga antar controller.
 
-**Continuous Integration** telah berhasil diterapkan karena setiap push dan pull request secara otomatis memicu workflow CI di GitHub Actions. Workflow tersebut melakukan kompilasi proyek, menjalankan seluruh rangkaian pengujian otomatis, serta melakukan analisis kode statis menggunakan SonarCloud. Hal ini memastikan bahwa masalah integrasi, kegagalan pengujian, dan masalah kualitas kode dapat terdeteksi lebih awal sebelum perubahan digabungkan ke branch utama. Quality gate otomatis juga memastikan standar kualitas minimum tetap terpenuhi.
+- **Lebih testable dan maintainable**  
+  Karena DIP (constructor injection + interface dependency), mock dependency pada test jadi lebih jelas dan perubahan implementasi lebih terisolasi.
 
-Selain itu, **Continuous Deployment** juga berhasil diimplementasikan dengan memanfaatkan layanan AWS EC2 sebagai lingkungan deployment. Setelah perubahan berhasil melewati tahap Continuous Integration, GitHub Actions secara otomatis membangun artefak aplikasi (file JAR), mengirimkannya ke instance EC2 melalui koneksi SSH, dan menjalankan ulang aplikasi pada server. Proses ini memungkinkan setiap perubahan pada branch utama langsung ter-deploy tanpa intervensi manual, sehingga memenuhi karakteristik Continuous Deployment.
+### 3) Disadvantages of not applying SOLID in this project:
+
+- **Class menjadi “gemuk” dan sulit dirawat**  
+  Jika SRP diabaikan, satu controller bisa menangani banyak domain sekaligus (produk + mobil), sehingga perubahan kecil berisiko merusak fitur lain.
+
+- **Setiap fitur baru memaksa edit kode lama**  
+  Jika OCP diabaikan, penambahan behavior baru sering berarti mengubah class existing terus-menerus, meningkatkan risiko regression.
+
+- **Inheritance salah pakai menyebabkan desain rapuh**  
+  Jika LSP diabaikan, seperti kasus `CarController extends ProductController`, relasi “is-a” menjadi tidak valid dan membingungkan maintainers.
+
+- **Client dipaksa bergantung pada method yang tidak dibutuhkan**  
+  Jika ISP diabaikan, interface besar membuat implementasi membawa method yang tidak relevan.
+
+- **Tight coupling ke implementasi konkret**  
+  Jika DIP diabaikan, controller tergantung langsung ke class implementasi (mis. `CarServiceImpl`), sehingga sulit ganti implementasi atau melakukan unit test yang rapi.
